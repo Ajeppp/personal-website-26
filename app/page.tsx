@@ -3,8 +3,16 @@ import ProjectCard from "../components/ProjectCard";
 
 export default function Home() {
   const projects = [
-    { id: 1, title: "Project One", description: "Short project description", link: "#" },
-    { id: 2, title: "Project Two", description: "Short project description", link: "#" },
+    {
+      id: 1, title: "Nikmat Group Website",
+      description: "This is the first freelance project that I have worked on seriously, this project was built using Laravel + Vue.js and Twill as a CMS framework, this project was done in a team and I have a role as a frontend developer.",
+      link: "https://nikmatgroup.co/"
+    },
+    {
+      id: 2, title: "Me But Better",
+      description: "This is a follow-up project after completing the NikmatGroup project, this is a website prepared for clients selling skincare products, in this project the team working on it is smaller with me focusing on the frontend and backend, this project still uses Laravel + Vue.js.",
+      link: "https://mebutbetter.co"
+    },
   ];
 
   return (

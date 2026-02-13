@@ -14,9 +14,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// export const metadata: Metadata = {
+//   title: "Jefer Setiawan | Fullstack Developer",
+//   description:
+//     "Fullstack developer building scalable web applications and automation systems with modern technologies.",
+//   openGraph: {
+//     title: "Jefer Setiawan | Fullstack Developer",
+//     description:
+//       "Portfolio of Jefer Setiawan — fullstack developer focused on scalable systems and end-to-end web applications.",
+//     url: "https://yourdomain.com",
+//     siteName: "Jefer Setiawan Portfolio",
+//     locale: "en_US",
+//     type: "website",
+//   },
+// };
+
 export const metadata: Metadata = {
-  title: "Your Name — Portfolio",
-  description: "Personal portfolio built with Next.js and Tailwind",
+  title: "Jefer Setiawan | Fullstack Developer Portfolio",
+  description:
+    "Portfolio of Jefer Setiawan, a fullstack developer specializing in scalable web applications, backend APIs, system design, and modern frontend development.",
 };
 
 export default function RootLayout({
