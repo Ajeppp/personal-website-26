@@ -49,15 +49,13 @@ export default function Intro() {
             <Mark className="h-20 w-20 text-4xl" />
           </motion.div>
 
-          <div className="overflow-hidden py-[0.12em]">
-            <motion.div
-              initial={{ y: "120%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
-            >
-              <Wordmark className="inline-block leading-[1.25] text-5xl sm:text-7xl text-text-primary" />
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ y: 36, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+          >
+            <Wordmark className="text-5xl sm:text-7xl leading-[1.2] text-text-primary" />
+          </motion.div>
 
           <motion.div
             initial={{ scaleX: 0 }}
