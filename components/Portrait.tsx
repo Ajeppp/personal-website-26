@@ -47,7 +47,7 @@ export default function Portrait() {
         ) : (
           <motion.img
             ref={imgRef}
-            src="/portrait.jpg"
+            src="/portrait.jpeg"
             onError={() => setErrored(true)}
             alt="Jefer Setiawan"
             style={{ y: yImg, scale }}
