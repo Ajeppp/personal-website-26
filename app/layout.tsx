@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ThemeProvider from "../components/ThemeProvider";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Background from "../components/Background";
+import ScrollProgress from "../components/ScrollProgress";
+import CursorGlow from "../components/CursorGlow";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,26 +18,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata: Metadata = {
-//   title: "Jefer Setiawan | Fullstack Developer",
-//   description:
-//     "Fullstack developer building scalable web applications and automation systems with modern technologies.",
-//   openGraph: {
-//     title: "Jefer Setiawan | Fullstack Developer",
-//     description:
-//       "Portfolio of Jefer Setiawan — fullstack developer focused on scalable systems and end-to-end web applications.",
-//     url: "https://yourdomain.com",
-//     siteName: "Jefer Setiawan Portfolio",
-//     locale: "en_US",
-//     type: "website",
-//   },
-// };
-
 export const metadata: Metadata = {
-  title: "Jefer Setiawan | Fullstack Developer Portfolio",
+  title: "Jefer Setiawan | Fullstack Developer",
   description:
-    "Portfolio of Jefer Setiawan, a fullstack developer specializing in scalable web applications, backend APIs, system design, and modern frontend development.",
+    "Fullstack developer building scalable web applications, backend APIs, and modern frontend experiences. Based in Indonesia.",
+  openGraph: {
+    title: "Jefer Setiawan | Fullstack Developer",
+    description:
+      "Fullstack developer building scalable web applications, backend APIs, and modern frontend experiences.",
+    siteName: "Jefer Setiawan",
+    locale: "en_US",
+    type: "website",
+  },
 };
+
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.classList.add(t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.classList.add('dark');}})();`;
 
 export default function RootLayout({
   children,
@@ -41,11 +40,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navbar />
-        <main className="min-h-screen mx-auto max-w-6xl px-6 pt-32 pb-10">{children}</main>
-        <Footer />
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] antialiased`}
+      >
+        <ThemeProvider>
+          <Background />
+          <ScrollProgress />
+          <CursorGlow />
+          <Navbar />
+          <main className="relative z-[2]">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
