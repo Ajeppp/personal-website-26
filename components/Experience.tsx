@@ -1,119 +1,122 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import TextReveal from "./TextReveal";
-import { spotlight } from "./spotlight";
 
 const experiences = [
   {
+    period: "2026 — Now",
     company: "PT Abadi Singapay Indonesia",
     role: "IT Support Developer",
-    period: "2026 — Present",
-    description:
-      "Troubleshoot payment system operations — transaction, settlement, and reconciliation issues. Debug production issues across payment gateway integrations including VA, QRIS, and e-wallet. Collaborate with backend and vendor teams to resolve root causes.",
-    tags: ["Payment Systems", "Debugging", "QRIS", "e-Wallet"],
+    detail:
+      "Troubleshoot payment system operations — transaction, settlement, and reconciliation. Debug production issues across payment gateway integrations (VA, QRIS, e-wallet) and work with backend and vendor teams to resolve root causes.",
+    tags: ["Payment Systems", "Debugging", "QRIS"],
   },
   {
+    period: "2024 — Now",
     company: "Hesed Tech",
     role: "Co-Founder",
-    period: "2024 — Present",
-    description:
-      "Co-founded a web development studio building animation-driven interfaces. Integrated DOKU payment gateway and OngkirMurah logistics API. Reduced content update time by 60% through CMS optimization. Contributed to a 40% increase in user retention.",
-    tags: ["Laravel", "Vue.js", "DOKU", "CMS", "Leadership"],
+    detail:
+      "Co-founded a studio building animation-driven web interfaces. Integrated DOKU payment gateway and OngkirMurah logistics API, cut content-update time by 60% via CMS optimization, and helped lift user retention by 40%.",
+    tags: ["Laravel", "Vue.js", "DOKU", "Leadership"],
   },
   {
+    period: "Jul — Dec 2024",
     company: "Bank Central Asia (BCA)",
     role: "Software Developer — Fullstack Intern",
-    period: "Jul — Dec 2024",
-    description:
-      "Developed automation programs to digitalize manual operational tasks using OutSystems. Enhanced internal applications with new features and improved backend logic. Collaborated with QA engineers for testing and validation.",
-    tags: ["OutSystems", "Automation", "Internal Tools"],
+    detail:
+      "Built automation programs to digitalize manual operational tasks using OutSystems. Enhanced internal applications with new features and improved backend logic, collaborating with QA for testing and validation.",
+    tags: ["OutSystems", "Automation"],
   },
   {
+    period: "Jan — Jun 2024",
     company: "Focus on Family Indonesia",
     role: "Fullstack Developer — Intern",
-    period: "Jan — Jun 2024",
-    description:
-      "Optimized internal CMS using Laravel. Refactored legacy codebase for maintainability. Designed RESTful APIs and tuned database performance through Eloquent ORM and complex raw SQL queries.",
-    tags: ["Laravel", "MySQL", "REST APIs", "Refactoring"],
+    detail:
+      "Optimized an internal CMS with Laravel, refactored legacy code for maintainability, designed RESTful APIs, and tuned database performance through Eloquent ORM and complex raw SQL queries.",
+    tags: ["Laravel", "MySQL", "REST APIs"],
   },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "circOut" as const } },
-};
-
 export default function Experience() {
+  const [active, setActive] = useState<number | null>(null);
+
   return (
-    <section id="experience" className="py-28 sm:py-36">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-14">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-sm font-medium text-accent tracking-[0.2em] uppercase mb-3"
-          >
-            Experience
-          </motion.p>
-          <TextReveal
-            as="h2"
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"
-          >
-            Where I&apos;ve worked
-          </TextReveal>
-        </div>
+    <section className="mx-auto max-w-7xl px-6 sm:px-10 py-24 sm:py-32">
+      <div className="flex items-baseline gap-4 border-t border-border pt-6">
+        <span className="eyebrow">(03)</span>
+        <span className="eyebrow">Experience</span>
+      </div>
 
-        <div className="space-y-4">
-          {experiences.map((exp, i) => (
-            <motion.div
+      <TextReveal
+        as="h2"
+        className="mt-10 font-display text-4xl sm:text-6xl leading-[1.0] tracking-[-0.01em] max-w-3xl"
+      >
+        A short history of building.
+      </TextReveal>
+
+      <div className="mt-12">
+        {experiences.map((exp, i) => {
+          const open = active === i;
+          return (
+            <div
               key={i}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: i * 0.08 }}
-              onMouseMove={spotlight}
-              className="spotlight group rounded-2xl border border-border bg-surface/40 backdrop-blur-sm hover:bg-surface/70 hover:border-border-hover transition-all duration-400 overflow-hidden"
+              onClick={() => setActive(open ? null : i)}
+              data-cursor={open ? undefined : "Read"}
+              className="group border-t border-border last:border-b cursor-pointer"
             >
-              <div className="relative z-10 p-6 sm:p-8">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-text-primary group-hover:text-accent transition-colors duration-300">
-                      {exp.role}
-                    </h3>
-                    <p className="text-text-secondary">{exp.company}</p>
-                  </div>
-                  <span className="text-sm text-text-muted font-[family-name:var(--font-geist-mono)] shrink-0">
-                    {exp.period}
+              <div className="grid grid-cols-12 items-center gap-3 py-7">
+                <span className="col-span-12 sm:col-span-3 eyebrow">
+                  {exp.period}
+                </span>
+                <h3 className="col-span-10 sm:col-span-7 font-display text-2xl sm:text-3xl tracking-[-0.01em] text-text-primary group-hover:text-accent transition-colors duration-300">
+                  {exp.role}
+                  <span className="block text-base sm:text-lg text-text-muted font-body mt-1">
+                    {exp.company}
                   </span>
-                </div>
-
-                {/* Description */}
-                <p className="text-sm text-text-muted leading-relaxed mb-5 max-w-3xl group-hover:text-text-secondary transition-colors duration-300">
-                  {exp.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2">
-                  {exp.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-1 text-xs rounded-md bg-accent-dim text-accent/80 border border-accent/10"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                </h3>
+                <motion.span
+                  animate={{ rotate: open ? 45 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="col-span-2 justify-self-end text-2xl text-text-muted"
+                >
+                  +
+                </motion.span>
               </div>
 
-              {/* Bottom accent line */}
-              <div className="h-px w-0 group-hover:w-full bg-gradient-to-r from-accent/40 to-transparent transition-all duration-700" />
-            </motion.div>
-          ))}
-        </div>
+              <AnimatePresence initial={false}>
+                {open && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="grid grid-cols-12 gap-3 pb-8">
+                      <div className="col-span-12 sm:col-span-9 sm:col-start-4 max-w-2xl">
+                        <p className="text-text-secondary leading-relaxed">
+                          {exp.detail}
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {exp.tags.map((t) => (
+                            <span
+                              key={t}
+                              className="rounded-full border border-border px-3 py-1 text-xs text-text-secondary"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

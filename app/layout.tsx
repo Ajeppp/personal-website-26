@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "../components/ThemeProvider";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
 import ScrollProgress from "../components/ScrollProgress";
-import CursorGlow from "../components/CursorGlow";
+import CursorLabel from "../components/CursorLabel";
+import Intro from "../components/Intro";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,14 +19,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
-  title: "Jefer Setiawan | Fullstack Developer",
+  title: "Jefer Setiawan — Fullstack Developer",
   description:
-    "Fullstack developer building scalable web applications, backend APIs, and modern frontend experiences. Based in Indonesia.",
+    "Jefer Setiawan is a fullstack developer building reliable, scalable web applications — from databases and APIs to refined interfaces. Based in Tangerang, Indonesia.",
   openGraph: {
-    title: "Jefer Setiawan | Fullstack Developer",
+    title: "Jefer Setiawan — Fullstack Developer",
     description:
-      "Fullstack developer building scalable web applications, backend APIs, and modern frontend experiences.",
+      "Fullstack developer building reliable, scalable web applications — from databases and APIs to refined interfaces.",
     siteName: "Jefer Setiawan",
     locale: "en_US",
     type: "website",
@@ -45,12 +53,13 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} font-body antialiased`}
       >
         <ThemeProvider>
+          <Intro />
           <Background />
           <ScrollProgress />
-          <CursorGlow />
+          <CursorLabel />
           <Navbar />
           <main className="relative z-[2]">{children}</main>
           <Footer />
