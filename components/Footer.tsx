@@ -1,11 +1,14 @@
-import React from "react";
-
 export default function Footer() {
-    return (
-        <footer className="w-full border-t border-white/6 py-8">
-            <div className="mx-auto max-w-3xl px-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
-                © {new Date().getFullYear()} Jefer Setiawan. Made with 🧡 — <a href="/" className="text-[rgb(var(--accent))] hover:underline">Back to top</a>
-            </div>
-        </footer>
-    );
+  return (
+    <footer className="relative z-[1] border-t border-border">
+      <div className="mx-auto max-w-6xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p className="text-sm text-text-muted">
+          &copy; {new Date().getFullYear()} Jefer Setiawan
+        </p>
+        <p className="text-xs text-text-muted/60">
+          Next.js &middot; Tailwind CSS &middot; Framer Motion
+        </p>
+      </div>
+    </footer>
+  );
 }
