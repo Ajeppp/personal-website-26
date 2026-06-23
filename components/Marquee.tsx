@@ -5,7 +5,7 @@ export default function Marquee({
   speed = 40,
   reverse = false,
   className = "",
-  separator = "✳",
+  separator = "·",
 }: {
   items: string[];
   speed?: number;
@@ -14,7 +14,7 @@ export default function Marquee({
   separator?: string;
 }) {
   const row = (
-    <div className="flex shrink-0 items-center">
+    <div className="flex shrink-0 items-center my-2">
       {items.map((item, i) => (
         <span key={i} className="flex items-center">
           <span className="whitespace-nowrap">{item}</span>
