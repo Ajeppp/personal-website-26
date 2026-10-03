@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import TextReveal from "./TextReveal";
 import Magnetic from "./Magnetic";
+import { SectionHead, Words } from "./Type";
 
 const socials = [
   { label: "LinkedIn", handle: "in/jefer-setiawan", href: "https://www.linkedin.com/in/jefer-setiawan/" },
@@ -11,76 +11,80 @@ const socials = [
   { label: "Email", handle: "jefersetiawan04@gmail.com", href: "mailto:jefersetiawan04@gmail.com" },
 ];
 
+const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-7xl px-6 sm:px-10 py-24 sm:py-32">
-      <div className="flex items-baseline gap-4 border-t border-border pt-6">
-        <span className="eyebrow">(05)</span>
-        <span className="eyebrow">Contact</span>
-      </div>
-
-      <div className="mt-16 text-center">
-        <TextReveal
-          as="h2"
-          className="font-display text-[clamp(2.75rem,9vw,8rem)] leading-[0.92] tracking-[-0.02em]"
-        >
-          Let&apos;s work
-        </TextReveal>
-        <div className="overflow-hidden">
-          <motion.div
-            initial={{ y: "110%" }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            className="font-display italic text-[clamp(2.75rem,9vw,8rem)] leading-[0.92] tracking-[-0.02em] text-accent"
-          >
-            together.
-          </motion.div>
+    <section id="contact" data-chapter="contact" className="relative z-[2] px-5 pb-20 pt-32 sm:px-10 sm:pt-48">
+      <div className="mx-auto max-w-[92rem]">
+        <div className="flex justify-center">
+          <SectionHead num="05" label="Contact" />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-12"
-        >
-          <Magnetic strength={0.5}>
-            <a
-              href="mailto:jefersetiawan04@gmail.com"
-              data-cursor="Email"
-              className="group inline-flex items-center gap-3 rounded-full bg-accent px-8 py-4 text-base font-medium text-bg transition-colors hover:bg-accent-hover"
-            >
-              jefersetiawan04@gmail.com
-              <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </Magnetic>
-        </motion.div>
-      </div>
+        <div className="mt-12 text-center">
+          <h2 data-chapter="halo" className="display text-[clamp(4.2rem,17.5vw,18rem)] leading-[0.82] text-fg">
+            <Words text="Let's work" className="block" />
+            <Words text="*together.*" delay={0.16} className="block" />
+          </h2>
 
-      {/* Socials */}
-      <div className="mt-20 grid sm:grid-cols-2 lg:grid-cols-4 border-t border-border">
-        {socials.map((s, i) => (
-          <motion.a
-            key={s.label}
-            href={s.href}
-            target={s.label === "Email" ? undefined : "_blank"}
-            rel={s.label === "Email" ? undefined : "noopener noreferrer"}
-            data-cursor="Open"
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
-            className="group flex flex-col gap-2 border-b sm:border-b-0 sm:border-r last:border-r-0 border-border px-1 py-7 sm:px-5"
+            transition={{ duration: 0.8, ease, delay: 0.25 }}
+            className="mx-auto mt-10 max-w-md text-fg-2"
           >
-            <span className="eyebrow">{s.label}</span>
-            <span className="text-text-primary group-hover:text-accent transition-colors break-all">
-              {s.handle}
-            </span>
-          </motion.a>
-        ))}
+            Open to new opportunities and freelance builds. Tell me what you&apos;re making.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease, delay: 0.35 }}
+            className="mt-9"
+          >
+            <Magnetic strength={0.45}>
+              <a
+                href="mailto:jefersetiawan04@gmail.com"
+                data-cursor="Write"
+                className="group inline-flex items-center gap-3 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-bg sm:px-9 sm:py-5 sm:text-lg"
+              >
+                jefersetiawan04@gmail.com
+                <svg className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </Magnetic>
+          </motion.div>
+        </div>
+
+        <div className="mt-28 grid border-t border-line sm:grid-cols-2 xl:grid-cols-4">
+          {socials.map((s, i) => (
+            <motion.a
+              key={s.label}
+              href={s.href}
+              target={s.label === "Email" ? undefined : "_blank"}
+              rel={s.label === "Email" ? undefined : "noopener noreferrer"}
+              data-cursor="Open"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease, delay: i * 0.08 }}
+              className="group flex items-center justify-between gap-4 border-b border-line bg-bg/40 px-1 py-7 backdrop-blur-sm sm:px-5 sm:odd:border-r xl:border-r xl:last:border-r-0"
+            >
+              <span>
+                <span className="eyebrow block">{s.label}</span>
+                <span className="mt-2 block text-fg [overflow-wrap:anywhere] transition-colors duration-300 group-hover:text-accent">
+                  {s.handle}
+                </span>
+              </span>
+              <svg className="h-4 w-4 shrink-0 text-mute transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </motion.a>
+          ))}
+        </div>
       </div>
     </section>
   );

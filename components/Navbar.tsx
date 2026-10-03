@@ -1,90 +1,85 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ThemeToggle from "./ThemeToggle";
+import { motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
 import Wordmark from "./Wordmark";
+import useReady from "./useReady";
+import { lockScroll } from "./SmoothScroll";
 
 const links = [
   { label: "About", href: "#about", num: "01" },
   { label: "Expertise", href: "#expertise", num: "02" },
-  { label: "Work", href: "#work", num: "03" },
-  { label: "Contact", href: "#contact", num: "04" },
+  { label: "Experience", href: "#experience", num: "03" },
+  { label: "Work", href: "#work", num: "04" },
+  { label: "Contact", href: "#contact", num: "05" },
 ];
 
+const ease: [number, number, number, number] = [0.76, 0, 0.24, 1];
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const ready = useReady();
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
+  const { scrollY } = useScroll();
+
+  // step aside while travelling down, come back on the way up
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    setHidden(y > 160 && y > prev);
+  });
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    lockScroll(open);
+    return () => lockScroll(false);
   }, [open]);
 
   return (
     <>
       <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "circOut" as const, delay: 0.1 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
-          scrolled
-            ? "bg-bg/80 backdrop-blur-xl border-b border-border"
-            : "border-b border-transparent"
-        }`}
+        initial={{ y: "-110%" }}
+        animate={{ y: !ready || (hidden && !open) ? "-110%" : "0%" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed inset-x-0 top-0 z-50"
       >
-        <nav className="mx-auto max-w-7xl px-6 sm:px-10 h-20 flex items-center justify-between">
-          <a href="#" data-cursor="Home" className="leading-none">
-            <Wordmark className="text-2xl" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-bg/85 to-transparent" />
+        <nav className="relative flex h-16 items-center justify-between px-5 sm:h-20 sm:px-10">
+          <a href="#top" data-cursor="Top" aria-label="Jefer Setiawan — home">
+            <Wordmark className="text-[1.75rem] text-fg" />
           </a>
 
-          <div className="hidden md:flex items-center gap-9">
+          <div className="hidden items-center gap-8 md:flex">
             {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="link-swap text-sm tracking-wide text-text-secondary"
-              >
+              <a key={l.label} href={l.href} className="link-swap font-mono text-[0.72rem] uppercase tracking-[0.18em] text-fg-2">
                 <span>{l.label}</span>
                 <span className="dup text-accent">{l.label}</span>
               </a>
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
-            <a
-              href="./CV_Jefer_Setiawan.pdf"
-              data-cursor="Open"
-              className="group inline-flex items-center gap-2 text-sm text-text-primary underline-grow"
-            >
-              Résumé
-              <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-              </svg>
-            </a>
-          </div>
+          <a
+            href="./CV_Jefer_Setiawan.pdf"
+            data-cursor="Open"
+            className="group hidden items-center gap-2 rounded-full border border-line-strong px-4 py-2 font-mono text-[0.72rem] uppercase tracking-[0.18em] text-fg transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-bg md:inline-flex"
+          >
+            Résumé
+            <svg className="h-3 w-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </a>
 
-          <div className="flex items-center gap-3 md:hidden">
-            <ThemeToggle />
-            <button
-              type="button"
-              onClick={() => setOpen(!open)}
-              aria-label="Menu"
-              className="flex flex-col gap-[6px] p-2"
-            >
-              <span className={`block h-px w-6 bg-text-primary transition-all duration-300 ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
-              <span className={`block h-px w-6 bg-text-primary transition-all duration-300 ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="flex items-center gap-3 font-mono text-[0.72rem] uppercase tracking-[0.18em] text-fg md:hidden"
+          >
+            {open ? "Close" : "Menu"}
+            <span className="flex flex-col gap-[5px]">
+              <span className={`block h-px w-6 bg-fg transition-transform duration-300 ${open ? "translate-y-[3px] rotate-45" : ""}`} />
+              <span className={`block h-px w-6 bg-fg transition-transform duration-300 ${open ? "-translate-y-[3px] -rotate-45" : ""}`} />
+            </span>
+          </button>
         </nav>
       </motion.header>
 
@@ -94,30 +89,32 @@ export default function Navbar() {
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-40 bg-bg md:hidden flex flex-col justify-center px-8"
+            transition={{ duration: 0.7, ease }}
+            className="fixed inset-0 z-40 flex flex-col justify-end bg-bg px-5 pb-10 pt-24 md:hidden"
           >
             {links.map((l, i) => (
-              <motion.a
+              <a
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.07, ease: "circOut" as const }}
-                className="group flex items-baseline gap-4 border-b border-border py-5"
+                className="flex items-baseline gap-4 overflow-hidden border-t border-line py-3"
               >
                 <span className="eyebrow">{l.num}</span>
-                <span className="font-display text-4xl text-text-primary group-hover:text-accent transition-colors">
+                <motion.span
+                  initial={{ y: "110%" }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.25 + i * 0.06, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="display block text-[3.4rem] text-fg"
+                >
                   {l.label}
-                </span>
-              </motion.a>
+                </motion.span>
+              </a>
             ))}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-10 flex gap-6 eyebrow"
+              transition={{ delay: 0.7 }}
+              className="eyebrow mt-8 flex gap-6"
             >
               <a href="https://github.com/Ajeppp" target="_blank" rel="noopener noreferrer">GitHub</a>
               <a href="https://www.linkedin.com/in/jefer-setiawan/" target="_blank" rel="noopener noreferrer">LinkedIn</a>

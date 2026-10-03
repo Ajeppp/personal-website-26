@@ -2,11 +2,11 @@ import Hero from "../components/Hero";
 import About from "../components/About";
 import Expertise from "../components/Expertise";
 import Experience from "../components/Experience";
-import Projects from "../components/Projects";
+import Work from "../components/Work";
 import Contact from "../components/Contact";
 import Marquee from "../components/Marquee";
 
-const marqueeItems = [
+const disciplines = [
   "Fullstack Development",
   "System Design",
   "Web Applications",
@@ -20,29 +20,26 @@ export default function Home() {
     <>
       <Hero />
 
-      <div className="border-y border-border py-6 sm:py-8">
-        <Marquee
-          items={marqueeItems}
-          speed={45}
-          className="font-display text-3xl sm:text-5xl italic text-text-primary"
-        />
+      {/* two crossed tapes between the hero and the story */}
+      <div className="relative z-[2] py-10 sm:py-16" aria-hidden="true">
+        <div className="-mx-[4vw] rotate-[2.2deg] border-y border-line-strong bg-bg py-2.5 sm:py-3.5">
+          <Marquee
+            items={disciplines}
+            speed={55}
+            reverse
+            className="display text-4xl text-fg-2 sm:text-6xl"
+            separatorClass="text-accent"
+          />
+        </div>
+        <div className="-mx-[4vw] -mt-8 -rotate-[1.6deg] bg-accent py-2.5 sm:-mt-12 sm:py-3.5">
+          <Marquee items={disciplines} speed={42} className="display text-4xl text-bg sm:text-6xl" />
+        </div>
       </div>
 
       <About />
       <Expertise />
       <Experience />
-      <Projects />
-
-      <div className="border-y border-border py-6 sm:py-8">
-        <Marquee
-          items={["Open to opportunities", "Let's build something", "Available for freelance"]}
-          speed={40}
-          reverse
-          className="font-display text-3xl sm:text-5xl italic text-text-primary"
-          separator="→"
-        />
-      </div>
-
+      <Work />
       <Contact />
     </>
   );

@@ -1,90 +1,54 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* ─────────────────────────────────────────────
-   DESIGN TOKENS — "Ink & Vermilion"
-   Dark = default (warm ink)
+   DESIGN TOKENS — "Volt"
+   Near-black, bone type, one electric lime.
+   Dark only: the WebGL world is lit for it.
    ───────────────────────────────────────────── */
 @theme {
-  --color-bg: #0e0d0b;
-  --color-bg-lighter: #16140f;
-  --color-surface: #17150e;
-  --color-surface-hover: #211e15;
-  --color-border: rgba(237, 234, 224, 0.1);
-  --color-border-hover: rgba(237, 234, 224, 0.24);
-  --color-accent: #f2693c;
-  --color-accent-hover: #ff7a4d;
-  --color-accent-dim: rgba(242, 105, 60, 0.12);
-  --color-accent-secondary: #e8a24a;
-  --color-text-primary: #edeae0;
-  --color-text-secondary: #b4b0a4;
-  --color-text-muted: #76726a;
+  --color-bg: #050608;
+  --color-surface: #0b0d11;
+  --color-surface-2: #12151b;
+  --color-line: rgba(232, 240, 228, 0.1);
+  --color-line-strong: rgba(232, 240, 228, 0.26);
+  --color-accent: #c8ff3d;
+  --color-accent-dim: rgba(200, 255, 61, 0.12);
+  --color-ice: #7fa8ff;
+  --color-fg: #eef1ea;
+  --color-fg-2: #a9ada5;
+  --color-mute: #6c7069;
+
+  --font-display: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+  --font-serif: var(--font-instrument), Georgia, serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Light = warm paper */
-html.light {
-  --color-bg: #f3f0e8;
-  --color-bg-lighter: #ffffff;
-  --color-surface: #fbfaf4;
-  --color-surface-hover: #efebe0;
-  --color-border: rgba(26, 25, 22, 0.12);
-  --color-border-hover: rgba(26, 25, 22, 0.26);
-  --color-accent: #d8451f;
-  --color-accent-hover: #be3a18;
-  --color-accent-dim: rgba(216, 69, 31, 0.1);
-  --color-accent-secondary: #a96a1c;
-  --color-text-primary: #1a1916;
-  --color-text-secondary: #514e47;
-  --color-text-muted: #8a8578;
-}
-
-:root { color-scheme: dark; }
-html.light { color-scheme: light; }
-
-/* ─────────────────────────────────────────────
-   FONTS
-   ───────────────────────────────────────────── */
-.font-display {
-  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  font-optical-sizing: auto;
-}
-.font-body {
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-}
-.font-mono {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+:root {
+  color-scheme: dark;
 }
 
 /* ─────────────────────────────────────────────
    BASE
    ───────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  background-color: var(--color-bg);
+  scroll-padding-top: 88px;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  color: var(--color-fg);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
   background-color: var(--color-accent);
   color: var(--color-bg);
-}
-
-/* Smooth theme crossfade */
-*,
-::before,
-::after {
-  transition-property: background-color, border-color, color, fill;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
 }
 
 /* Hide native cursor when custom cursor is active (fine pointers only) */
@@ -96,99 +60,78 @@ body {
 }
 
 /* ─────────────────────────────────────────────
-   EDITORIAL HELPERS
+   TYPE
    ───────────────────────────────────────────── */
-.eyebrow {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  letter-spacing: -0.012em;
+  line-height: 0.86;
+  font-optical-sizing: auto;
 }
 
-.rule {
-  height: 1px;
-  width: 100%;
-  background: var(--color-border);
+/* Accent words: light serif italic set against the condensed caps */
+.serif-i {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
 
-/* Grain overlay */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-mute);
+}
+
+/* ─────────────────────────────────────────────
+   ATMOSPHERE
+   ───────────────────────────────────────────── */
 .grain {
   position: fixed;
   inset: -50%;
   width: 200%;
   height: 200%;
-  opacity: 0.04;
+  opacity: 0.05;
   pointer-events: none;
-  z-index: 1;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
 }
 
-/* Drifting accent glows */
-.glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
+.vignette {
+  position: fixed;
+  inset: 0;
   pointer-events: none;
-}
-.glow-1 {
-  top: -10%;
-  right: -5%;
-  width: 45vw;
-  height: 45vw;
-  background: radial-gradient(circle, var(--color-accent-dim), transparent 70%);
-  animation: drift1 26s ease-in-out infinite;
-}
-.glow-2 {
-  bottom: -15%;
-  left: -10%;
-  width: 40vw;
-  height: 40vw;
   background: radial-gradient(
-    circle,
-    color-mix(in oklab, var(--color-accent-secondary) 12%, transparent),
-    transparent 70%
+    ellipse 120% 90% at 50% 45%,
+    transparent 55%,
+    rgba(5, 6, 8, 0.6) 100%
   );
-  animation: drift2 32s ease-in-out infinite;
 }
 
-@keyframes drift1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-6vw, 8vh) scale(1.15); }
-}
-@keyframes drift2 {
-  0%, 100% { transform: translate(0, 0) scale(1.05); }
-  50% { transform: translate(7vw, -6vh) scale(0.92); }
-}
-
-/* Marquee */
+/* ─────────────────────────────────────────────
+   MOTION HELPERS
+   ───────────────────────────────────────────── */
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-/* Animated gradient text (used sparingly) */
-.text-gradient {
-  background: linear-gradient(
-    100deg,
-    var(--color-accent) 0%,
-    var(--color-accent-secondary) 50%,
-    var(--color-accent) 100%
-  );
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: gradientShift 7s ease infinite;
-}
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
 }
 
-/* Editorial link: text swaps upward on hover */
+@keyframes sheen {
+  from { background-position: 0% 50%; }
+  to { background-position: 200% 50%; }
+}
+
+/* Link whose label rolls up to an accent duplicate */
 .link-swap {
   position: relative;
   display: inline-block;
@@ -197,25 +140,21 @@ body {
 }
 .link-swap > span {
   display: block;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.link-swap > span:not(.dup) {
-  transform: translateY(0);
+  transition: transform 0.5s var(--ease-out-expo);
 }
 .link-swap > span.dup {
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateY(100%);
+  transform: translateY(105%);
 }
 .link-swap:hover > span:not(.dup) {
-  transform: translateY(-100%);
+  transform: translateY(-105%);
 }
 .link-swap:hover > span.dup {
   transform: translateY(0);
 }
 
-/* Animated underline */
 .underline-grow {
   position: relative;
 }
@@ -223,25 +162,57 @@ body {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -2px;
+  bottom: -3px;
   height: 1px;
-  width: 0;
+  width: 100%;
   background: currentColor;
-  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-out-expo);
 }
 .underline-grow:hover::after {
-  width: 100%;
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Rows that flood with accent from the bottom on hover */
+.flood {
+  position: relative;
+  isolation: isolate;
+}
+.flood::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.55s var(--ease-out-expo);
+}
+.flood[data-open="true"]::before {
+  transform: scaleY(1);
+}
+
+/* Holographic sheen for the ID card */
+.holo {
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(200, 255, 61, 0.35) 38%,
+    rgba(46, 230, 168, 0.3) 46%,
+    rgba(91, 124, 255, 0.35) 54%,
+    transparent 72%
+  );
+  background-size: 220% 220%;
+  mix-blend-mode: screen;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-hover);
-  border-radius: 0;
-}
+::-webkit-scrollbar-thumb { background: var(--color-line-strong); }
 
-/* Focus */
 :where(a, button, input, textarea):focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;

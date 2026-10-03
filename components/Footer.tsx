@@ -1,31 +1,26 @@
 "use client";
 
 import Wordmark from "./Wordmark";
+import { scrollToY } from "./SmoothScroll";
 
 export default function Footer() {
   return (
-    <footer className="relative z-[2] mx-auto max-w-7xl px-6 sm:px-10 pb-12">
-      <div className="flex flex-col gap-10 border-t border-border pt-10">
-        <div className="flex items-end justify-between gap-6">
-          <a href="#" data-cursor="Top" className="leading-[0.8]">
-            <Wordmark className="text-6xl sm:text-8xl text-text-primary" />
-          </a>
-          <button
-            type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            data-cursor="Top"
-            className="eyebrow underline-grow shrink-0"
-          >
-            Back to top ↑
-          </button>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <p className="eyebrow">© {new Date().getFullYear()} Jefer Setiawan</p>
-          <p className="eyebrow">Fullstack Developer — Tangerang, ID</p>
-          <p className="eyebrow">Fraunces · Geist · Next.js</p>
-        </div>
+    <footer className="relative z-[2] overflow-hidden px-5 pb-8 sm:px-10">
+      <div className="mx-auto flex max-w-[92rem] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="eyebrow">© {new Date().getFullYear()} Jefer Setiawan</p>
+        <p className="eyebrow">Fullstack Developer — Tangerang, ID</p>
+        <button
+          type="button"
+          onClick={() => scrollToY(0)}
+          data-cursor="Top"
+          className="eyebrow underline-grow self-start !text-fg sm:self-auto"
+        >
+          Back to top ↑
+        </button>
       </div>
+      <a href="#top" data-cursor="Top" aria-label="Back to top" className="mt-6 block text-center lg:pr-0">
+        <Wordmark className="block text-[38vw] leading-[0.74] text-fg sm:text-[34vw]" />
+      </a>
     </footer>
   );
 }

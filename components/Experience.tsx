@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import TextReveal from "./TextReveal";
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { SectionHead, Words } from "./Type";
 
 const experiences = [
   {
     period: "2026 — Now",
+    current: true,
     company: "PT Abadi Singapay Indonesia",
     role: "IT Support Developer",
     detail:
@@ -15,6 +16,7 @@ const experiences = [
   },
   {
     period: "2024 — Now",
+    current: true,
     company: "Hesed Tech",
     role: "Co-Founder",
     detail:
@@ -23,6 +25,7 @@ const experiences = [
   },
   {
     period: "Jul — Dec 2024",
+    current: false,
     company: "Bank Central Asia (BCA)",
     role: "Software Developer — Fullstack Intern",
     detail:
@@ -31,6 +34,7 @@ const experiences = [
   },
   {
     period: "Jan — Jun 2024",
+    current: false,
     company: "Focus on Family Indonesia",
     role: "Fullstack Developer — Intern",
     detail:
@@ -39,84 +43,71 @@ const experiences = [
   },
 ];
 
+const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function Experience() {
-  const [active, setActive] = useState<number | null>(null);
+  const list = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: list, offset: ["start 0.75", "end 0.55"] });
+  const drawn = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.4 });
 
   return (
-    <section className="mx-auto max-w-7xl px-6 sm:px-10 py-24 sm:py-32">
-      <div className="flex items-baseline gap-4 border-t border-border pt-6">
-        <span className="eyebrow">(03)</span>
-        <span className="eyebrow">Experience</span>
-      </div>
+    <section id="experience" data-chapter="experience" className="relative z-[2] px-5 py-28 sm:px-10 sm:py-40">
+      <div className="mx-auto max-w-[92rem]">
+        <SectionHead num="03" label="Experience" />
+        <Words
+          as="h2"
+          text="A short history of *building.*"
+          className="display mt-8 block max-w-[14ch] text-[clamp(3rem,8.4vw,8.5rem)] text-fg"
+        />
 
-      <TextReveal
-        as="h2"
-        className="mt-10 font-display text-4xl sm:text-6xl leading-[1.0] tracking-[-0.01em] max-w-3xl"
-      >
-        A short history of building.
-      </TextReveal>
+        <div ref={list} className="relative mt-16 lg:mr-[24%]">
+          {/* the line draws itself as the list scrolls through */}
+          <div className="absolute bottom-0 left-[5px] top-2 w-px bg-line md:left-[calc(25%+5px)]">
+            <motion.div style={{ scaleY: drawn }} className="h-full w-px origin-top bg-accent" />
+          </div>
 
-      <div className="mt-12">
-        {experiences.map((exp, i) => {
-          const open = active === i;
-          return (
-            <div
-              key={i}
-              onClick={() => setActive(open ? null : i)}
-              data-cursor={open ? undefined : "Read"}
-              className="group border-t border-border last:border-b cursor-pointer"
+          {experiences.map((exp, i) => (
+            <motion.article
+              key={exp.company}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-90px" }}
+              transition={{ duration: 0.9, ease, delay: 0.05 }}
+              className="relative grid gap-3 pb-16 pl-9 last:pb-2 md:grid-cols-4 md:gap-0 md:pl-0"
             >
-              <div className="grid grid-cols-12 items-center gap-3 py-7">
-                <span className="col-span-12 sm:col-span-3 eyebrow">
-                  {exp.period}
-                </span>
-                <h3 className="col-span-10 sm:col-span-7 font-display text-2xl sm:text-3xl tracking-[-0.01em] text-text-primary group-hover:text-accent transition-colors duration-300">
-                  {exp.role}
-                  <span className="block text-base sm:text-lg text-text-muted font-body mt-1">
-                    {exp.company}
-                  </span>
-                </h3>
-                <motion.span
-                  animate={{ rotate: open ? 45 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="col-span-2 justify-self-end text-2xl text-text-muted"
-                >
-                  +
-                </motion.span>
+              <div className="eyebrow md:pr-8 md:pt-3 md:text-right">
+                {exp.period}
+                {exp.current && <span className="mt-1 block !text-accent">Current</span>}
               </div>
 
-              <AnimatePresence initial={false}>
-                {open && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="grid grid-cols-12 gap-3 pb-8">
-                      <div className="col-span-12 sm:col-span-9 sm:col-start-4 max-w-2xl">
-                        <p className="text-text-secondary leading-relaxed">
-                          {exp.detail}
-                        </p>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {exp.tags.map((t) => (
-                            <span
-                              key={t}
-                              className="rounded-full border border-border px-3 py-1 text-xs text-text-secondary"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
+              <span className="absolute left-0 top-1.5 flex h-[11px] w-[11px] items-center justify-center md:left-1/4 md:top-3">
+                {exp.current && (
+                  <span className="absolute h-full w-full animate-ping rounded-full bg-accent opacity-60" />
                 )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+                <span className={`relative h-[11px] w-[11px] rounded-full border ${exp.current ? "border-accent bg-accent" : "border-line-strong bg-bg"}`} />
+              </span>
+
+              <div className="md:col-span-3 md:pl-12">
+                <h3 className="display text-[clamp(1.9rem,4.4vw,3.9rem)] text-fg">{exp.role}</h3>
+                <p className="serif-i mt-1 text-2xl text-accent sm:text-3xl">{exp.company}</p>
+                <p className="mt-5 max-w-2xl leading-relaxed text-fg-2">{exp.detail}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {exp.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-line-strong px-3 py-1 font-mono text-[0.66rem] uppercase tracking-[0.14em] text-fg-2"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <span className="display pointer-events-none absolute right-0 top-0 hidden text-7xl text-line-strong xl:block">
+                0{i + 1}
+              </span>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );

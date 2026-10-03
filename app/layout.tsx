@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono, Big_Shoulders, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "../components/ThemeProvider";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Background from "../components/Background";
-import ScrollProgress from "../components/ScrollProgress";
 import CursorLabel from "../components/CursorLabel";
 import Intro from "../components/Intro";
+import Hud from "../components/Hud";
+import SmoothScroll from "../components/SmoothScroll";
+import SceneMount from "../components/SceneMount";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,10 +19,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const bigShoulders = Big_Shoulders({
+  variable: "--font-big-shoulders",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
+  axes: ["opsz"],
+});
+
+const instrument = Instrument_Serif({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  weight: "400",
   style: ["normal", "italic"],
 });
 
@@ -40,7 +46,10 @@ export const metadata: Metadata = {
   },
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.classList.add(t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.classList.add('dark');}})();`;
+export const viewport: Viewport = {
+  themeColor: "#050608",
+  colorScheme: "dark",
+};
 
 export default function RootLayout({
   children,
@@ -48,22 +57,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} font-body antialiased`}
-      >
-        <ThemeProvider>
-          <Intro />
-          <Background />
-          <ScrollProgress />
-          <CursorLabel />
-          <Navbar />
-          <main className="relative z-[2]">{children}</main>
-          <Footer />
-        </ThemeProvider>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${bigShoulders.variable} ${instrument.variable}`}
+    >
+      <body className="font-sans antialiased">
+        <SmoothScroll />
+        <Intro />
+        {/* One fixed WebGL world behind the page. Sections sit above it (z-2);
+            the hero title deliberately sits below it (z-0). */}
+        <SceneMount />
+        <div className="vignette z-[3]" aria-hidden="true" />
+        <div className="grain z-[60]" aria-hidden="true" />
+        <CursorLabel />
+        <Navbar />
+        <Hud />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );
