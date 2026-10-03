@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "../components/ThemeProvider";
+import SmoothScroll from "../components/SmoothScroll";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Background from "../components/Background";
@@ -22,8 +22,13 @@ const geistMono = Geist_Mono({
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
-  style: ["normal", "italic"],
+  weight: ["300", "400", "500"],
+  style: ["italic"],
+});
+
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -40,30 +45,24 @@ export const metadata: Metadata = {
   },
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.classList.add(t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.classList.add('dark');}})();`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} font-body antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${bricolage.variable} font-body antialiased`}
       >
-        <ThemeProvider>
-          <Intro />
-          <Background />
-          <ScrollProgress />
-          <CursorLabel />
-          <Navbar />
-          <main className="relative z-[2]">{children}</main>
-          <Footer />
-        </ThemeProvider>
+        <SmoothScroll />
+        <Intro />
+        <Background />
+        <ScrollProgress />
+        <CursorLabel />
+        <Navbar />
+        <main className="relative z-[2]">{children}</main>
+        <Footer />
       </body>
     </html>
   );

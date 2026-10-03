@@ -5,7 +5,7 @@ export default function Wordmark({
 }) {
   return (
     <span
-      className={`font-display font-semibold lowercase tracking-[-0.02em] ${className}`}
+      className={`font-display font-bold lowercase tracking-[-0.04em] ${className}`}
     >
       jefer<span className="text-accent">.</span>
     </span>

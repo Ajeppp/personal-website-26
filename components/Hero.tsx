@@ -1,40 +1,42 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
-import Portrait from "./Portrait";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Magnetic from "./Magnetic";
+import { Chars } from "./Type";
+import useIntroReady from "./useIntroReady";
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const lineMask: Variants = {
-  hidden: { y: "115%" },
-  show: (i: number) => ({
-    y: 0,
-    transition: { duration: 0.9, ease, delay: 0.3 + i * 0.12 },
-  }),
-};
-
-const fade: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease, delay: 0.7 + i * 0.1 },
-  }),
-};
-
 export default function Hero() {
+  const ready = useIntroReady();
+  const ref = useRef<HTMLElement>(null);
+
+  // The headline sinks back and fades as the page scrolls away from it
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+
+  const fade = (i: number) => ({
+    initial: { opacity: 0, y: 24 },
+    animate: ready ? { opacity: 1, y: 0 } : undefined,
+    transition: { duration: 0.9, ease, delay: 0.75 + i * 0.1 },
+  });
+
   return (
-    <section className="relative mx-auto max-w-7xl px-6 sm:px-10 pt-32 sm:pt-36 pb-20">
+    <section
+      ref={ref}
+      data-stage="0"
+      className="relative flex min-h-svh flex-col justify-between px-6 sm:px-10 pt-28 pb-8"
+    >
       {/* Meta row */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex items-center justify-between border-b border-border pb-5"
-      >
-        <span className="eyebrow">Portfolio — 2025</span>
-        <span className="eyebrow hidden sm:block">Tangerang, Indonesia</span>
+      <motion.div {...fade(3)} className="flex items-center justify-between">
+        <span className="eyebrow">Portfolio — 2026</span>
+        <span className="eyebrow hidden sm:block">6.18° S, 106.63° E — Tangerang</span>
         <span className="eyebrow flex items-center gap-2">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
@@ -44,95 +46,72 @@ export default function Hero() {
         </span>
       </motion.div>
 
-      <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-end mt-10 lg:mt-14">
-        {/* Left — type */}
-        <div className="lg:col-span-7 order-2 lg:order-1">
-          <h1 className="font-display font-medium leading-[0.92] tracking-[-0.02em] text-[clamp(3.5rem,11vw,9rem)]">
-            <span className="block overflow-hidden">
-              <motion.span variants={lineMask} initial="hidden" animate="show" custom={0} className="block">
-                Jefer
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden">
-              <motion.span variants={lineMask} initial="hidden" animate="show" custom={1} className="block italic">
-                Setiawan<span className="text-accent not-italic">.</span>
-              </motion.span>
-            </span>
-          </h1>
+      <motion.div style={{ y, scale, opacity }} className="origin-left">
+        <motion.p {...fade(0)} className="eyebrow mb-4 sm:mb-6 !text-text-secondary">
+          Fullstack developer
+        </motion.p>
+        <h1 className="text-[clamp(4rem,16.5vw,17rem)] leading-[0.84] tracking-[-0.055em]">
+          <span className="block font-display font-bold">
+            <Chars text="Jefer" show={ready} delay={0.1} />
+          </span>
+          <span className="block font-serif font-light italic tracking-[-0.04em] sm:pl-[9vw]">
+            <Chars text="Setiawan" show={ready} delay={0.3} />
+          </span>
+        </h1>
+      </motion.div>
 
-          <motion.div
-            variants={fade}
-            initial="hidden"
-            animate="show"
-            custom={0}
-            className="mt-8 max-w-xl"
-          >
-            <p className="text-lg sm:text-xl text-text-secondary leading-relaxed">
-              Fullstack developer crafting reliable, scalable web applications —
-              from databases and APIs to refined, human interfaces.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={fade}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            className="mt-9 flex flex-wrap items-center gap-4"
-          >
-            <Magnetic>
-              <a
-                href="#contact"
-                data-cursor="Say hi"
-                className="group inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg transition-colors hover:bg-accent-hover"
-              >
-                Get in touch
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <a
-                href="./CV_Jefer_Setiawan.pdf"
-                data-cursor="Open"
-                className="inline-flex items-center gap-2 px-3 py-3.5 text-sm text-text-primary underline-grow"
-              >
-                Download CV
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </a>
-            </Magnetic>
-          </motion.div>
-        </div>
-
-        {/* Right — portrait */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="lg:col-span-5 order-1 lg:order-2 w-2/3 sm:w-1/2 lg:w-full ml-auto lg:ml-0"
+      <div className="grid grid-cols-12 items-end gap-6">
+        <motion.p
+          {...fade(1)}
+          className="col-span-12 md:col-span-5 text-base sm:text-lg text-text-secondary leading-relaxed"
         >
-          <Portrait />
+          I build reliable, scalable web applications — from databases and APIs
+          up to refined, human interfaces.
+        </motion.p>
+
+        <motion.div
+          {...fade(2)}
+          className="col-span-12 md:col-span-5 md:col-start-7 flex flex-wrap items-center gap-4"
+        >
+          <Magnetic>
+            <a
+              href="#contact"
+              data-cursor="Say hi"
+              className="group inline-flex items-center gap-3 rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg transition-colors hover:bg-accent-hover"
+            >
+              Get in touch
+              <svg className="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a
+              href="./CV_Jefer_Setiawan.pdf"
+              data-cursor="Open"
+              className="inline-flex items-center gap-2 px-3 py-3.5 text-sm text-text-primary underline-grow"
+            >
+              Download CV
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+            </a>
+          </Magnetic>
+        </motion.div>
+
+        <motion.div
+          {...fade(4)}
+          className="hidden md:flex col-span-1 col-start-12 justify-end items-center gap-3 eyebrow"
+        >
+          <motion.span
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            ↓
+          </motion.span>
+          Scroll
         </motion.div>
       </div>
-
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="mt-16 flex items-center gap-3 eyebrow"
-      >
-        <motion.span
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          ↓
-        </motion.span>
-        Scroll to explore
-      </motion.div>
     </section>
   );
 }

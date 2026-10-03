@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import TextReveal from "./TextReveal";
+import { Words } from "./Type";
 
 const experiences = [
   {
@@ -43,20 +43,20 @@ export default function Experience() {
   const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section className="mx-auto max-w-7xl px-6 sm:px-10 py-24 sm:py-32">
+    <section
+      data-stage="3"
+      className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 sm:px-10 py-28 sm:py-40"
+    >
       <div className="flex items-baseline gap-4 border-t border-border pt-6">
         <span className="eyebrow">(03)</span>
         <span className="eyebrow">Experience</span>
       </div>
 
-      <TextReveal
-        as="h2"
-        className="mt-10 font-display text-4xl sm:text-6xl leading-[1.0] tracking-[-0.01em] max-w-3xl"
-      >
+      <Words className="mt-12 font-display font-semibold text-[clamp(2.6rem,6vw,5.5rem)] leading-[0.95] tracking-[-0.04em] max-w-3xl">
         A short history of building.
-      </TextReveal>
+      </Words>
 
-      <div className="mt-12">
+      <div className="mt-12 lg:w-[56%]">
         {experiences.map((exp, i) => {
           const open = active === i;
           return (
@@ -70,7 +70,7 @@ export default function Experience() {
                 <span className="col-span-12 sm:col-span-3 eyebrow">
                   {exp.period}
                 </span>
-                <h3 className="col-span-10 sm:col-span-7 font-display text-2xl sm:text-3xl tracking-[-0.01em] text-text-primary group-hover:text-accent transition-colors duration-300">
+                <h3 className="col-span-10 sm:col-span-7 font-display font-medium text-2xl sm:text-3xl tracking-[-0.03em] text-text-primary group-hover:text-accent transition-colors duration-300">
                   {exp.role}
                   <span className="block text-base sm:text-lg text-text-muted font-body mt-1">
                     {exp.company}
@@ -103,7 +103,7 @@ export default function Experience() {
                           {exp.tags.map((t) => (
                             <span
                               key={t}
-                              className="rounded-full border border-border px-3 py-1 text-xs text-text-secondary"
+                              className="rounded-full border border-border bg-bg/40 px-3 py-1 text-xs text-text-secondary backdrop-blur-sm"
                             >
                               {t}
                             </span>

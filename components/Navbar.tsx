@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import ThemeToggle from "./ThemeToggle";
 import Wordmark from "./Wordmark";
+import { lockScroll } from "./SmoothScroll";
 
 const links = [
   { label: "About", href: "#about", num: "01" },
@@ -23,10 +23,9 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    if (!open) return;
+    lockScroll(true);
+    return () => lockScroll(false);
   }, [open]);
 
   return (
@@ -37,7 +36,7 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: "circOut" as const, delay: 0.1 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
           scrolled
-            ? "bg-bg/80 backdrop-blur-xl border-b border-border"
+            ? "bg-bg/60 backdrop-blur-xl border-b border-border"
             : "border-b border-transparent"
         }`}
       >
@@ -60,7 +59,6 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
             <a
               href="./CV_Jefer_Setiawan.pdf"
               data-cursor="Open"
@@ -74,7 +72,6 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3 md:hidden">
-            <ThemeToggle />
             <button
               type="button"
               onClick={() => setOpen(!open)}
@@ -108,7 +105,7 @@ export default function Navbar() {
                 className="group flex items-baseline gap-4 border-b border-border py-5"
               >
                 <span className="eyebrow">{l.num}</span>
-                <span className="font-display text-4xl text-text-primary group-hover:text-accent transition-colors">
+                <span className="font-display font-semibold tracking-[-0.03em] text-4xl text-text-primary group-hover:text-accent transition-colors">
                   {l.label}
                 </span>
               </motion.a>

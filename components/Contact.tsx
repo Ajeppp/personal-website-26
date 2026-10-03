@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import TextReveal from "./TextReveal";
+import { Words } from "./Type";
 import Magnetic from "./Magnetic";
 
 const socials = [
@@ -13,36 +13,36 @@ const socials = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-7xl px-6 sm:px-10 py-24 sm:py-32">
+    <section
+      id="contact"
+      data-stage="5"
+      className="mx-auto flex min-h-screen max-w-7xl flex-col px-6 sm:px-10 pt-24 pb-24"
+    >
       <div className="flex items-baseline gap-4 border-t border-border pt-6">
         <span className="eyebrow">(05)</span>
         <span className="eyebrow">Contact</span>
       </div>
 
-      <div className="mt-16 text-center">
-        <TextReveal
-          as="h2"
-          className="font-display text-[clamp(2.75rem,9vw,8rem)] leading-[0.92] tracking-[-0.02em]"
-        >
+      {/* The 3D planet parks itself on this spot */}
+      <div data-orb-anchor aria-hidden="true" className="h-[30vh] sm:h-[42vh]" />
+
+      <div className="text-center">
+        <Words className="font-display font-bold text-[clamp(3rem,11vw,10.5rem)] leading-[0.86] tracking-[-0.055em]">
           Let&apos;s work
-        </TextReveal>
-        <div className="overflow-hidden">
-          <motion.div
-            initial={{ y: "110%" }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            className="font-display italic text-[clamp(2.75rem,9vw,8rem)] leading-[0.92] tracking-[-0.02em] text-accent"
-          >
-            together.
-          </motion.div>
-        </div>
+        </Words>
+        <Words
+          as="p"
+          delay={0.12}
+          className="font-serif font-light italic text-[clamp(3rem,11vw,10.5rem)] leading-[0.95] tracking-[-0.04em]"
+        >
+          together.
+        </Words>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-12"
         >
           <Magnetic strength={0.5}>

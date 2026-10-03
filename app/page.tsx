@@ -20,11 +20,11 @@ export default function Home() {
     <>
       <Hero />
 
-      <div className="border-y border-border py-6 sm:py-8">
+      <div className="border-y border-border bg-bg/40 py-6 sm:py-8 backdrop-blur-sm">
         <Marquee
           items={marqueeItems}
           speed={45}
-          className="font-display text-3xl sm:text-5xl italic text-text-primary"
+          className="font-serif font-light text-3xl sm:text-5xl italic text-text-primary"
         />
       </div>
 
@@ -33,12 +33,12 @@ export default function Home() {
       <Experience />
       <Projects />
 
-      <div className="border-y border-border py-6 sm:py-8">
+      <div className="border-y border-border bg-bg/40 py-6 sm:py-8 backdrop-blur-sm">
         <Marquee
           items={["Open to opportunities", "Let's build something", "Available for freelance"]}
           speed={40}
           reverse
-          className="font-display text-3xl sm:text-5xl italic text-text-primary"
+          className="font-serif font-light text-3xl sm:text-5xl italic text-text-primary"
           separator="→"
         />
       </div>

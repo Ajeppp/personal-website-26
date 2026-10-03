@@ -8,8 +8,8 @@ export default function Mark({
       aria-hidden="true"
       className={`inline-flex items-center justify-center font-body font-bold leading-none tracking-[-0.05em] ${className}`}
       style={{
-        backgroundColor: "#f2693c",
-        color: "#0e0d0b",
+        backgroundColor: "#ff5a36",
+        color: "#08090d",
         borderRadius: "24%",
       }}
     >
